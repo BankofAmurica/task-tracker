@@ -17,147 +17,127 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
+            background: white;
+            margin: 0;
+            padding: 10px;
+            font-size: 14px;
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
             text-align: center;
             color: #333;
-            margin-bottom: 30px;
-            font-size: 2.5rem;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            margin: 0 0 20px 0;
+            font-size: 1.8rem;
+            font-weight: 600;
         }
 
         .week-container {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
         .day-column {
             background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            min-height: 500px;
-            transition: transform 0.2s ease;
-        }
-
-        .day-column:hover {
-            transform: translateY(-5px);
+            border: 1px solid #e1e5e9;
+            border-radius: 6px;
+            padding: 12px;
+            min-height: 300px;
         }
 
         .day-header {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid #667eea;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #007AFF;
             color: #333;
             text-align: center;
         }
 
         .today {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: #007AFF;
             color: white;
         }
 
         .task-input-container {
-            margin-bottom: 15px;
-        }
-
-        .task-input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e1e5e9;
-            border-radius: 10px;
-            font-size: 14px;
             margin-bottom: 10px;
-            transition: border-color 0.3s ease;
         }
 
-        .task-input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .tag-input {
+        .task-input, .tag-input {
             width: 100%;
-            padding: 8px 12px;
-            border: 2px solid #e1e5e9;
-            border-radius: 8px;
-            font-size: 12px;
-            margin-bottom: 5px;
+            padding: 6px 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 13px;
+            margin-bottom: 6px;
+            box-sizing: border-box;
+        }
+
+        .task-input:focus, .tag-input:focus {
+            outline: none;
+            border-color: #007AFF;
         }
 
         .tag-suggestions {
             display: flex;
             flex-wrap: wrap;
-            gap: 5px;
-            margin-bottom: 10px;
+            gap: 3px;
+            margin-bottom: 6px;
         }
 
         .tag-suggestion {
             background: #f0f2f5;
             border: none;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 10px;
             cursor: pointer;
-            transition: background-color 0.2s ease;
         }
 
         .tag-suggestion:hover {
-            background: #667eea;
+            background: #007AFF;
             color: white;
         }
 
         .add-task-btn {
             width: 100%;
-            padding: 10px;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            border-radius: 8px;
+            padding: 6px;
+            background: white;
+            color: #333;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
             cursor: pointer;
-            font-weight: bold;
-            transition: transform 0.2s ease;
+            font-weight: 500;
+            font-size: 12px;
         }
 
         .add-task-btn:hover {
-            transform: scale(1.02);
+            background: #f8f9fa;
         }
 
         .task-item {
             background: #f8f9fa;
-            margin: 8px 0;
-            padding: 12px;
-            border-radius: 10px;
-            border-left: 4px solid #667eea;
-            transition: all 0.3s ease;
+            margin: 6px 0;
+            padding: 8px;
+            border-radius: 4px;
+            border-left: 3px solid #007AFF;
             cursor: pointer;
+            font-size: 13px;
         }
 
         .task-item:hover {
             background: #e9ecef;
-            transform: translateX(5px);
         }
 
         .task-item.completed {
@@ -168,91 +148,98 @@
         }
 
         .task-item.overdue {
-            background: #f8d7da;
+            background: #f8f9fa;
             border-left-color: #dc3545;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.7; }
-            100% { opacity: 1; }
         }
 
         .task-text {
             font-weight: 500;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
             color: #333;
         }
 
         .task-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 4px;
+            gap: 3px;
         }
 
         .task-tag {
-            background: #667eea;
+            background: #007AFF;
             color: white;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: bold;
+            padding: 1px 4px;
+            border-radius: 2px;
+            font-size: 9px;
+            font-weight: 500;
         }
 
         .controls {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .rollover-btn {
-            background: linear-gradient(45deg, #28a745, #20c997);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 10px;
+            background: white;
+            color: #333;
+            border: 1px solid #d1d5db;
+            padding: 8px 16px;
+            border-radius: 6px;
             cursor: pointer;
-            font-weight: bold;
-            font-size: 16px;
-            transition: transform 0.2s ease;
+            font-weight: 500;
+            font-size: 14px;
+            margin-right: 8px;
         }
 
         .rollover-btn:hover {
-            transform: scale(1.05);
+            background: #f8f9fa;
         }
 
         .sync-controls {
-            margin-top: 15px;
+            margin-top: 10px;
             display: flex;
-            gap: 10px;
+            gap: 8px;
             justify-content: center;
             flex-wrap: wrap;
         }
 
         .sync-btn {
-            background: linear-gradient(45deg, #28a745, #20c997);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
+            background: white;
+            color: #333;
+            border: 1px solid #d1d5db;
+            padding: 6px 12px;
+            border-radius: 4px;
             cursor: pointer;
-            font-weight: bold;
-            font-size: 14px;
-            transition: transform 0.2s ease;
+            font-weight: 500;
+            font-size: 12px;
             text-decoration: none;
             display: inline-block;
         }
 
         .sync-btn:hover {
-            transform: scale(1.02);
+            background: #f8f9fa;
         }
 
-        .sync-btn.export {
-            background: linear-gradient(45deg, #007bff, #0056b3);
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 2px;
+            padding: 2px 6px;
+            font-size: 10px;
+            cursor: pointer;
+            margin-left: 6px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
         }
 
-        .sync-btn.import {
-            background: linear-gradient(45deg, #fd7e14, #e55100);
+        .task-item:hover .delete-btn {
+            opacity: 1;
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
         }
 
         .status-message {
@@ -283,27 +270,12 @@
             border: 1px solid #f5c6cb;
         }
 
-        .delete-btn {
-            background: #dc3545;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 4px 8px;
-            font-size: 12px;
-            cursor: pointer;
-            margin-left: 8px;
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-
-        .task-item:hover .delete-btn {
-            opacity: 1;
-        }
-
-        .task-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        @keyframes highlight {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.01); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.01); }
+            100% { transform: scale(1); }
         }
 
         @media (max-width: 1024px) {
@@ -329,19 +301,19 @@
 </head>
 <body>
     <div class="container">
-        <h1>📅 Weekly Task Tracker</h1>
+        <h1>Weekly Task Tracker</h1>
         
         <div class="controls">
             <button class="rollover-btn" onclick="rolloverTasks()">
-                🔄 Roll Over Incomplete Tasks
+                Roll Over Incomplete Tasks
             </button>
             
             <div class="sync-controls">
                 <button class="sync-btn export" onclick="downloadBackup()">
-                    📁 Download Backup
+                    Download Backup
                 </button>
                 <label class="sync-btn import" for="import-file">
-                    📂 Import Backup
+                    Import Backup
                 </label>
                 <input type="file" id="import-file" accept=".json" onchange="importData(event)" style="display: none;">
             </div>
@@ -382,7 +354,7 @@
             localStorage.setItem('weeklyTasks', JSON.stringify(tasks));
             localStorage.setItem('weeklyTags', JSON.stringify(Array.from(allTags)));
             
-            // Also auto-export to Google Drive format
+            // Also auto-export to cloud format
             autoExportToCloud();
         }
 
@@ -405,7 +377,7 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
             
-            showStatus('📁 Backup file downloaded - upload to Google Drive!', 'success');
+            showStatus('Backup file downloaded - upload to Google Drive!', 'success');
         }
 
         // Import data from file
@@ -430,12 +402,12 @@
                         saveData();
                         renderTasks();
                         updateTagSuggestions();
-                        showStatus('✅ Tasks imported successfully!', 'success');
+                        showStatus('Tasks imported successfully!', 'success');
                     } else {
                         throw new Error('Invalid file format');
                     }
                 } catch (error) {
-                    showStatus('❌ Error importing file - invalid format', 'error');
+                    showStatus('Error importing file - invalid format', 'error');
                 }
             };
             reader.readAsText(file);
@@ -472,7 +444,7 @@
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
                 
-                showStatus('📁 Latest backup downloaded!', 'success');
+                showStatus('Latest backup downloaded!', 'success');
             }
         }
 
@@ -511,7 +483,7 @@
                         <input type="text" class="tag-input" placeholder="Tags (comma-separated)" 
                                id="tag-input-${day}">
                         <div class="tag-suggestions" id="tag-suggestions-${day}"></div>
-                        <button class="add-task-btn" onclick="addTask('${day}')">+ Add Task</button>
+                        <button class="add-task-btn" onclick="addTask('${day}')">Add Task</button>
                     </div>
                     <div class="tasks-container" id="tasks-${day}"></div>
                 </div>
@@ -626,7 +598,7 @@
             
             saveData(); // Save after rollover
             renderTasks();
-            showStatus(`📅 Rolled over ${Object.values(tasks).flat().filter(t => !t.completed && t.originalDay !== t.dueDay).length} incomplete tasks`, 'success');
+            showStatus(`Rolled over ${Object.values(tasks).flat().filter(t => !t.completed && t.originalDay !== t.dueDay).length} incomplete tasks`, 'success');
         }
 
         function updateTagSuggestions() {
@@ -652,6 +624,30 @@
             const weekContainer = document.getElementById('weekContainer');
             weekContainer.innerHTML = days.map(createDayColumn).join('');
             renderTasks();
+            
+            // Auto-scroll to current day
+            scrollToCurrentDay();
+        }
+
+        // Scroll to current day of the week
+        function scrollToCurrentDay() {
+            const currentDay = getCurrentDay();
+            if (currentDay) {
+                const dayIndex = days.indexOf(currentDay);
+                const dayColumns = document.querySelectorAll('.day-column');
+                
+                if (dayColumns[dayIndex]) {
+                    // Smooth scroll to the current day column
+                    dayColumns[dayIndex].scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                        inline: 'center'
+                    });
+                    
+                    // Add a subtle highlight animation
+                    dayColumns[dayIndex].style.animation = 'highlight 2s ease-in-out';
+                }
+            }
         }
 
         // Initialize the app
