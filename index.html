@@ -45,6 +45,13 @@
             grid-template-columns: repeat(5, 1fr);
             gap: 15px;
             margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .week-container.focused {
+            grid-template-columns: 1fr;
+            max-width: 400px;
+            margin: 0 auto 20px auto;
         }
 
         .day-column {
@@ -53,6 +60,27 @@
             border-radius: 6px;
             padding: 12px;
             min-height: 300px;
+            transition: all 0.3s ease;
+        }
+
+        .week-container.focused .day-column:not(.today-column) {
+            display: none;
+        }
+
+        .view-toggle-btn {
+            background: white;
+            color: #333;
+            border: 1px solid #d1d5db;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+
+        .view-toggle-btn:hover {
+            background: #f8f9fa;
         }
 
         .day-header {
@@ -66,8 +94,9 @@
         }
 
         .today {
-            background: #007AFF;
-            color: white;
+            background: white;
+            color: #333;
+            border-bottom: 2px solid #dc3545;
         }
 
         .task-input-container {
@@ -307,6 +336,9 @@
             <button class="rollover-btn" onclick="rolloverTasks()">
                 Roll Over Incomplete Tasks
             </button>
+            <button class="view-toggle-btn" id="viewToggle" onclick="toggleView()">
+                Show All Days
+            </button>
             
             <div class="sync-controls">
                 <button class="sync-btn export" onclick="downloadBackup()">
@@ -329,6 +361,7 @@
         const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
         let tasks = {};
         let allTags = new Set();
+        let focusedView = true; // Start with focused view
 
         // Load data from localStorage
         function loadData() {
@@ -475,7 +508,7 @@
             const isToday = day === getCurrentDay();
             
             return `
-                <div class="day-column">
+                <div class="day-column ${isToday ? 'today-column' : ''}">
                     <div class="day-header ${isToday ? 'today' : ''}">${day}</div>
                     <div class="task-input-container">
                         <input type="text" class="task-input" placeholder="Add a task..." 
@@ -623,10 +656,35 @@
         function initializeWeek() {
             const weekContainer = document.getElementById('weekContainer');
             weekContainer.innerHTML = days.map(createDayColumn).join('');
+            
+            // Set initial focused view
+            updateView();
             renderTasks();
             
-            // Auto-scroll to current day
-            scrollToCurrentDay();
+            // Auto-scroll to current day (only if not in focused mode)
+            if (!focusedView) {
+                scrollToCurrentDay();
+            }
+        }
+
+        // Toggle between focused and full week view
+        function toggleView() {
+            focusedView = !focusedView;
+            updateView();
+        }
+
+        // Update the view based on focusedView state
+        function updateView() {
+            const weekContainer = document.getElementById('weekContainer');
+            const toggleButton = document.getElementById('viewToggle');
+            
+            if (focusedView) {
+                weekContainer.classList.add('focused');
+                toggleButton.textContent = 'Show All Days';
+            } else {
+                weekContainer.classList.remove('focused');
+                toggleButton.textContent = 'Show Today Only';
+            }
         }
 
         // Scroll to current day of the week
