@@ -79,8 +79,64 @@
             margin-left: 8px;
         }
 
-        .view-toggle-btn:hover {
-            background: #f8f9fa;
+        .backup-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .backup-link {
+            color: #007AFF;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 6px 8px;
+        }
+
+        .backup-link:hover {
+            text-decoration: underline;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 120px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 4px;
+            border: 1px solid #e1e5e9;
+            z-index: 1;
+            top: 100%;
+            left: 0;
+        }
+
+        .dropdown-content.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 8px 12px;
+            font-size: 12px;
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .dropdown-item:first-child {
+            border-radius: 4px 4px 0 0;
+        }
+
+        .dropdown-item:last-child {
+            border-radius: 0 0 4px 4px;
         }
 
         .day-header {
@@ -333,21 +389,17 @@
         <h1>Weekly Task Tracker</h1>
         
         <div class="controls">
-            <button class="rollover-btn" onclick="rolloverTasks()">
-                Roll Over Incomplete Tasks
-            </button>
             <button class="view-toggle-btn" id="viewToggle" onclick="toggleView()">
                 Show All Days
             </button>
             
-            <div class="sync-controls">
-                <button class="sync-btn export" onclick="downloadBackup()">
-                    Download Backup
-                </button>
-                <label class="sync-btn import" for="import-file">
-                    Import Backup
-                </label>
-                <input type="file" id="import-file" accept=".json" onchange="importData(event)" style="display: none;">
+            <div class="backup-dropdown">
+                <a class="backup-link" onclick="toggleDropdown(event)">Backup ▼</a>
+                <div class="dropdown-content" id="backupDropdown">
+                    <button class="dropdown-item" onclick="downloadBackup()">Download</button>
+                    <label class="dropdown-item" for="import-file">Upload</label>
+                    <input type="file" id="import-file" accept=".json" onchange="importData(event)" style="display: none;">
+                </div>
             </div>
             
             <div id="status-message" class="status-message" style="display: none;"></div>
@@ -603,36 +655,51 @@
             });
         }
 
-        function rolloverTasks() {
-            const dayIndexes = {};
-            days.forEach((day, index) => {
-                dayIndexes[day] = index;
-            });
-
-            // Process days in reverse order to avoid moving tasks multiple times
-            for (let i = days.length - 1; i >= 0; i--) {
+        // Auto-rollover incomplete tasks when loading
+        function autoRolloverTasks() {
+            const currentDay = getCurrentDay();
+            if (!currentDay) return; // Weekend, no rollover needed
+            
+            const currentDayIndex = days.indexOf(currentDay);
+            let rolledOverCount = 0;
+            
+            // Check all previous days and move incomplete tasks to today
+            for (let i = 0; i < currentDayIndex; i++) {
                 const day = days[i];
                 const incompleteTasks = tasks[day].filter(task => !task.completed);
                 const completedTasks = tasks[day].filter(task => task.completed);
                 
-                // Move incomplete tasks to next day (if not Friday)
-                if (i < 4) { // Not Friday (index 4)
-                    const nextDay = days[i + 1];
-                    incompleteTasks.forEach(task => {
-                        // Update the task's due day for tracking
-                        task.dueDay = nextDay;
-                        tasks[nextDay].push(task);
-                    });
-                }
+                // Move incomplete tasks to current day
+                incompleteTasks.forEach(task => {
+                    task.dueDay = currentDay;
+                    tasks[currentDay].push(task);
+                    rolledOverCount++;
+                });
                 
-                // Keep only completed tasks in current day
+                // Keep only completed tasks in the previous day
                 tasks[day] = completedTasks;
             }
             
-            saveData(); // Save after rollover
-            renderTasks();
-            showStatus(`Rolled over ${Object.values(tasks).flat().filter(t => !t.completed && t.originalDay !== t.dueDay).length} incomplete tasks`, 'success');
+            if (rolledOverCount > 0) {
+                showStatus(`Auto-rolled ${rolledOverCount} incomplete tasks to today`, 'success');
+                saveData();
+            }
         }
+
+        // Toggle backup dropdown
+        function toggleDropdown(event) {
+            event.stopPropagation();
+            const dropdown = document.getElementById('backupDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('backupDropdown');
+            if (dropdown && dropdown.classList.contains('show')) {
+                dropdown.classList.remove('show');
+            }
+        });
 
         function updateTagSuggestions() {
             days.forEach(day => {
@@ -656,6 +723,9 @@
         function initializeWeek() {
             const weekContainer = document.getElementById('weekContainer');
             weekContainer.innerHTML = days.map(createDayColumn).join('');
+            
+            // Auto-rollover incomplete tasks before rendering
+            autoRolloverTasks();
             
             // Set initial focused view
             updateView();
